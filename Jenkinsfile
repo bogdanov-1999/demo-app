@@ -26,6 +26,12 @@ pipeline {
             }
         }
 
+        stage('Run Container') {
+            steps {
+                 bat "docker run --rm demo-app:${env.BUILD_NUMBER}"
+            }
+        }
+
         stage('Package') {
             steps {
                 writeFile file: 'artifact.txt', text: "Build number: ${env.BUILD_NUMBER}"
