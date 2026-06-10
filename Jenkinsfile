@@ -16,7 +16,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Запускаем тесты'
+                bat 'findstr "Hello Jenkins" app.txt'
             }
         }
 
