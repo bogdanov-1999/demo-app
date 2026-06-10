@@ -1,36 +1,18 @@
-pipeline {
-    agent any
+stage('Test') {
+    steps {
+        bat 'findstr "Hello Jenkins" app.txt'
+    }
+}
 
-    stages {
-        stage('Checkout') {
-            steps {
-                echo 'Получаем код из GitHub'
-            }
-        }
+stage('Docker Build') {
+    steps {
+        bat 'docker build -t demo-app:%BUILD_NUMBER% .'
+    }
+}
 
-        stage('Build') {
-            steps {
-                echo 'Собираем приложение'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                bat 'findstr "Hello Jenkins" app.txt'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                writeFile file: 'artifact.txt', text: "Build number: ${env.BUILD_NUMBER}"
-                archiveArtifacts artifacts: 'artifact.txt'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Развертывание завершено'
-            }
-        }
+stage('Package') {
+    steps {
+        writeFile file: 'artifact.txt', text: "Build number: ${env.BUILD_NUMBER}"
+        archiveArtifacts artifacts: 'artifact.txt'
     }
 }
